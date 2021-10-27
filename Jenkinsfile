@@ -3,7 +3,7 @@ pipeline {
 	parameters {
         string(name: 'AWS_REGION', defaultValue: 'eu-central-1', description: 'aws region for ansible aws modules')
 		
-		string(name: 'VPC_NAME', defaultValue: 'deploy_vpc', description: 'existing vpc tag-name')
+		string(name: 'VPC_NAME', defaultValue: 'deploy-vpc', description: 'existing vpc tag-name')
     }
     stages {
         stage('Dependencies') {
