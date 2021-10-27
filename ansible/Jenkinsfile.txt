@@ -1,0 +1,26 @@
+pipeline {
+    agent { label 'master'}
+	parameters {
+        string(name: 'AWS_REGION', defaultValue: 'eu-central-1', description: 'aws region for ansible aws modules')
+    }
+    stages {
+        stage('Dependencies') {
+            steps {
+                sh 'ansible-galaxy collection install -r ansible/requirements.yml'
+            }
+        }
+		stage ('ansible-playbook') {
+			steps {
+				withCredentials([[
+					$class: 'AmazonWebServicesCredentialsBinding',
+					credentialsId: "aws-admin",
+					accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+					secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+				]]) {
+					// AWS Code
+				}
+				ansiblePlaybook(playbook: 'ansible/deploy-service.yml')
+			}
+		}
+	}
+}
