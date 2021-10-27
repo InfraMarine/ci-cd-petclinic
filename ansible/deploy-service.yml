@@ -4,6 +4,10 @@
   gather_facts: no
 
   tasks:
+    - name: Print env var
+      ansible.builtin.debug:
+        msg: "vpc name: '{{ lookup('env','VPC_NAME') }}'"
+
     - name: Get VPC id by name
       amazon.aws.ec2_vpc_net_info:
         aws_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
