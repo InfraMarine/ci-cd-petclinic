@@ -1,0 +1,13 @@
+---
+- hosts: localhost
+
+  tasks:
+    - name: Get VPC id by name
+      amazon.aws.ec2_vpc_net_info:
+        filters:
+          "tag:Name": {{ lookup('env','VPC_NAME') }}
+      register: vpc_info
+
+    - name: Print return information from the previous task
+      ansible.builtin.debug:
+        msg: "vpc id: {{ vpc_info.vpcs[0].vpc_id }}"
