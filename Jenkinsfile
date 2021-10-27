@@ -19,9 +19,8 @@ pipeline {
 					accessKeyVariable: 'AWS_ACCESS_KEY_ID',
 					secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
 				]]) {
-					// AWS Code
+					ansiblePlaybook(inventory: 'ansible/hosts.ini', playbook: 'ansible/deploy-service.yml')
 				}
-				ansiblePlaybook(inventory: 'ansible/hosts.ini', playbook: 'ansible/deploy-service.yml')
 			}
 		}
 	}
