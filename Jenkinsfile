@@ -21,7 +21,7 @@ pipeline {
 				]]) {
 					// AWS Code
 				}
-				ansiblePlaybook(playbook: 'ansible/deploy-service.yml')
+				ansiblePlaybook(inventory: 'ansible/hosts.ini', playbook: 'ansible/deploy-service.yml')
 			}
 		}
 	}
