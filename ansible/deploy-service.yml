@@ -12,4 +12,4 @@
 
     - name: Print return information from the previous task
       ansible.builtin.debug:
-        msg: "vpc id: {{ vpc_info.vpcs[0].vpc_id }}"
+        msg: "vpc id: {{ vpc_info.vpcs }}"

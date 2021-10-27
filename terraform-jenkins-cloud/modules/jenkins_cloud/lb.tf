@@ -49,6 +49,7 @@ resource "aws_lb_target_group" "jenkins" {
   health_check {
     enabled = true
     path    = "/login"
+    interval = 120
   }
   
   lifecycle {
