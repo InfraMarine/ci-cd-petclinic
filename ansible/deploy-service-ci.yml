@@ -4,7 +4,7 @@
   gather_facts: no
 
   tasks:
-    -set_fact:
+    - set_fact:
       ecr_url: "{{ lookup('env','ECR_URL') }}"
       build_id: "{{ lookup('env','BUILD_ID') }}"
 
