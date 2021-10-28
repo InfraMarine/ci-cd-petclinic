@@ -22,7 +22,7 @@
       ansible.builtin.debug:
         msg: "vpc id: {{ vpc_info.vpcs }}"
 
-    - name: CI: create ecs service from ecr image
+    - name: Create ecs service from ecr image
       include_role:
         name: deploy_service
       vars:
