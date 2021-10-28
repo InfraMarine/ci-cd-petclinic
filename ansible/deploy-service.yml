@@ -4,10 +4,14 @@
   gather_facts: no
 
   tasks:
+    - name: Print vpc var
+      ansible.builtin.debug:
+        msg: "vpc {{ lookup('env','VPC_NAME') }}"
+
     - name: Get VPC id by name
       amazon.aws.ec2_vpc_net_info:
-        # filters:
-        #   "tag:Name": "{{ lookup('env','VPC_NAME') }}"
+        filters:
+          "tag:Name": {{ lookup('env','VPC_NAME') }}
       register: vpc_info
 
     - name: Print return information from the previous task

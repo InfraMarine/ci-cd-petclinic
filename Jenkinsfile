@@ -4,6 +4,10 @@ pipeline {
         string(name: 'AWS_REGION', defaultValue: 'eu-central-1', description: 'aws region for ansible aws modules')
 		
 		string(name: 'VPC_NAME', defaultValue: 'deploy-vpc', description: 'existing vpc tag-name')
+
+		string(name: 'ECR_URL',
+			defaultValue: '232484871880.dkr.ecr.eu-central-1.amazonaws.com',
+			description: 'ecr url without repo name')
     }
     stages {
         stage('Dependencies') {
