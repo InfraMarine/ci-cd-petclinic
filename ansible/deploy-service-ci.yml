@@ -5,8 +5,8 @@
 
   tasks:
     - set_fact:
-      ecr_url: "{{ lookup('env','ECR_URL') }}"
-      build_id: "{{ lookup('env','BUILD_ID') }}"
+        ecr_url: "{{ lookup('env','ECR_URL') }}"
+        build_id: "{{ lookup('env','BUILD_ID') }}"
 
     - name: Print vpc var
       ansible.builtin.debug:
