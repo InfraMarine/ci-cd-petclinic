@@ -1,0 +1,31 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    -set_fact:
+      ecr_url: "{{ lookup('env','ECR_URL') }}"
+      build_id: "{{ lookup('env','BUILD_ID') }}"
+
+    - name: Print vpc var
+      ansible.builtin.debug:
+        msg: "vpc {{ lookup('env','VPC_NAME') }}"
+
+    - name: Get VPC id by name
+      amazon.aws.ec2_vpc_net_info:
+        filters:
+          "tag:Name": "{{ lookup('env','VPC_NAME') }}"
+      register: vpc_info
+
+    - name: Print return information from the previous task
+      ansible.builtin.debug:
+        msg: "vpc id: {{ vpc_info.vpcs }}"
+
+    - name: CI: create ecs service from ecr image
+      include_role:
+        name: deploy_service
+      vars:
+        service_name: "{{ app_name }}-ci-latest"
+        image: "{{ ecr_url }}/{{ app_name }}:{{ build_id }}"
+        ecs_cluster_name: "{{ lookup('env','ECS_CLUSTER_NAME') }}"

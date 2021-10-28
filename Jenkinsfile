@@ -8,6 +8,10 @@ pipeline {
 		string(name: 'ECR_URL',
 			defaultValue: '232484871880.dkr.ecr.eu-central-1.amazonaws.com',
 			description: 'ecr url without repo name')
+
+		string(name: 'ECS_CLUSTER_NAME',
+			defaultValue: 'petclinic-CI-QA-deploy',
+			description: 'ecs cluster name')
     }
     stages {
         stage('Dependencies') {
@@ -23,7 +27,7 @@ pipeline {
 					accessKeyVariable: 'AWS_ACCESS_KEY_ID',
 					secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
 				]]) {
-					ansiblePlaybook(inventory: 'ansible/hosts.ini', playbook: 'ansible/deploy-service.yml')
+					ansiblePlaybook(inventory: 'ansible/hosts.ini', playbook: 'ansible/deploy-service-ci.yml')
 				}
 			}
 		}

@@ -1,0 +1,39 @@
+- name: Create task definition
+  community.aws.ecs_taskdefinition:
+    family: "{{ service_name }}"
+    containers:
+    - name: "{{ service_name }}"
+      essential: true
+      image: "{{ image }}"
+      portMappings:
+      - containerPort: 8080
+        hostPort: 8080
+      memoryReservation: 512
+    state: present
+  register: task_output
+
+- name: Print task name and revision     
+  debug: 
+    msg: "{{ task_output.taskdefinition[\"family\"] }}:{{ task_output.taskdefinition[\"revision\"] }}"
+
+- name: create ecs service
+  community.aws.ecs_service:
+    state: present
+    name: "{{ service_name }}"
+    cluster: "{{ ecs_cluster_name }}"
+    task_definition: "{{ task_output.taskdefinition[\"family\"] }}:{{ task_output.taskdefinition[\"revision\"] }}"
+    desired_count: 1       
+  register: service_output
+
+- name: Print service name 
+  debug: var=service_output.service.serviceName
+
+- name: Get service info
+  community.aws.ecs_service_info:
+    cluster: "{{ ecs_cluster_name }}"
+    service: "{{ service_output.service.serviceName }}"
+    details: true
+  register: svc_info
+
+- name: print service deployments
+  debug: var=svc_info.services[0].deployments
