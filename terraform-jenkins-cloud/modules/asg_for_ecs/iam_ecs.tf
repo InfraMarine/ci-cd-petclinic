@@ -28,7 +28,7 @@ resource "aws_iam_instance_profile" "ecs" {
 
 resource "aws_iam_role_policy_attachment" "ecs_for_ec2" {
   role       = aws_iam_role.ecs.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+  policy_arn = "arn:${data.aws_partition.current.partition}:iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
 }
 
 resource "aws_iam_role_policy_attachment" "amazon_ssm_managed_instance" {
