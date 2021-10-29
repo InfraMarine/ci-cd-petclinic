@@ -11,24 +11,54 @@ resource "aws_ecr_repository" this {
   image_tag_mutability = "MUTABLE"
 }
 
-module "ecs_cluster" {
-  source = "infrablocks/ecs-cluster/aws"
-  
-  region = var.region
-  vpc_id = module.vpc.vpc_id
-  subnet_ids = module.vpc.public_subnets
-  security_groups = [aws_security_group.app_instance.id]
+resource "aws_key_pair" this {
+  key_name   = "deploy-key"
+  public_key = file("../.ssh/deploy_rsa.pub")
+}
 
-  component = "petclinic"
-  deployment_identifier = "CI-QA"
+# subnets public cos nat is required for private  subnets
+module "asg_for_ecs" {
+  source            = "../terraform-jenkins-cloud/modules/asg_for_ecs" # publish this module?
+  vpc_id            = module.vpc.vpc_id
+  subnet_ids        = module.vpc.public_subnets
+  ecs_cluster_name  = var.cluster_name
+  instance_type     = "t3.micro"
+  desired_capacity  = 1
+  min_size          = 0
+  max_size          = 3
+  key_name          = aws_key_pair.this.key_name
+  sg_ids            = [aws_security_group.app_instance.id]
+}
+
+resource "aws_ecs_capacity_provider" "this" {
+  name = "deploy_asg_provider"
+
+  auto_scaling_group_provider {
+    auto_scaling_group_arn = module.asg_for_ecs.asg_arn
+    
+    managed_scaling {
+      maximum_scaling_step_size = 10
+      minimum_scaling_step_size = 1
+      status                    = "ENABLED"
+    }
+  }
+}
+
+resource "aws_ecs_cluster" "this" {
+  name = var.cluster_name
+  capacity_providers = [aws_ecs_capacity_provider.this.name]
   
-  cluster_name = "deploy"
-  cluster_instance_ssh_public_key_path = "../.ssh/deploy_rsa.pub"
-  cluster_instance_type = "t3.micro"
-  associate_public_ip_addresses = "yes"
-  cluster_minimum_size = 0
-  cluster_maximum_size = 4
-  cluster_desired_capacity = 0
+  default_capacity_provider_strategy {
+    capacity_provider = aws_ecs_capacity_provider.this.name
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+  
+  tags = {
+    Terraform = "true"
+  }
 }
 
 module "vpc" {

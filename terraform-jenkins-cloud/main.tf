@@ -4,16 +4,6 @@ provider "aws" {
   region = var.region
 }
 
-data "aws_ami" "ecs_ami" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn-ami-*-amazon-ecs-optimized"]
-  }
-}
-
 resource "aws_key_pair" this {
   key_name   = "ci-key"
   public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCg57JG/eU8U2phRUTD/Hdh4DFhjn7GnlODfdwkL0EqbcTt3ygw/h27bn1/wxouLAXGRMbbHeaGjorARTA9V3ekz/Sr5WORHN+6zMKH7+oI6nqqJ5/EwPur1wN5xltbFc8aV+btS9Qn9lDcS5zXSavqabkI2G9MYBAZR0+6vZj4/1i79de7CMDhVW0Ic9VWTmit7ddwPQthrCZvl7OE2aHeDjI4cSGhf6qE7O5yMmfYIKKxjlmvMNuItvGzHTd4aXhe7ylYUVkEKotO+Kde5Wjr4wr685a2XUATJQLeWeJ/IzTThjruDQGWXfaWblONBVqjJ9v1r/fi6uh+o22uWqOxwsIVyRkP7u9uJR3CibW5d9nLo/yPKspmgHIzfQEozosndZeiBIscqGT7EVNViH6cVfzho4wJGXjYVDjwj5m0BsfPH0003FqnckZOjkztSQRawjnjcIk9OBiY7gEgVZtkGye2nN/fsZbdZBMpNi09S6kEzdJ7IE7K8A6nM14P0Gs= placid@dell-pc"
@@ -26,7 +16,6 @@ module "asg_for_ecs" {
   vpc_id            = aws_vpc.jenkins.id
   subnet_ids        = aws_subnet.public[*].id
   ecs_cluster_name  = var.ecs_cluster_name
-  image_id          = data.aws_ami.ecs_ami.id
   instance_type     = "t3.micro"
   desired_capacity  = 2
   min_size          = 1

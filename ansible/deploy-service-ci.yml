@@ -8,20 +8,6 @@
         ecr_url: "{{ lookup('env','ECR_URL') }}"
         build_id: "{{ lookup('env','BUILD_ID') }}"
 
-    - name: Print vpc var
-      ansible.builtin.debug:
-        msg: "vpc {{ lookup('env','VPC_NAME') }}"
-
-    - name: Get VPC id by name
-      amazon.aws.ec2_vpc_net_info:
-        filters:
-          "tag:Name": "{{ lookup('env','VPC_NAME') }}"
-      register: vpc_info
-
-    - name: Print return information from the previous task
-      ansible.builtin.debug:
-        msg: "vpc id: {{ vpc_info.vpcs }}"
-
     - name: Create ecs service from ecr image
       include_role:
         name: deploy_service

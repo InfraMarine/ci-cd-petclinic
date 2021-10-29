@@ -47,7 +47,7 @@ resource "aws_ecs_task_definition" "jenkins" {
     {
       name      = "jenkins"
       image     = "medoth/jenkins-ansible:lts-jdk11"
-      memory    = 512
+      memoryReservation    = 512
       essential = true
 
       portMappings = [

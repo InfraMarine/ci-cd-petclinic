@@ -28,13 +28,3 @@
 
 - name: Print service name 
   debug: var=service_output.service.serviceName
-
-- name: Get service info
-  community.aws.ecs_service_info:
-    cluster: "{{ ecs_cluster_name }}"
-    service: "{{ service_output.service.serviceName }}"
-    details: true
-  register: svc_info
-
-- name: print service deployments
-  debug: var=svc_info.services[0].deployments

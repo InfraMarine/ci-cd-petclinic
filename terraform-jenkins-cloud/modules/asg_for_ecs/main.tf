@@ -1,6 +1,16 @@
+data "aws_ami" "ecs_ami" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn-ami-*-amazon-ecs-optimized"]
+  }
+}
+
 # autoscaling group + launch template
 resource "aws_launch_template" "this" {
-  image_id                = var.image_id
+  image_id                = var.image_id == "" ? data.aws_ami.ecs_ami.id : var.image_id
   instance_type           = var.instance_type
   key_name                = var.key_name
   

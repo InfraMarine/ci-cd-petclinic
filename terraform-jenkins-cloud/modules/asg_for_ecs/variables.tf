@@ -15,6 +15,7 @@ variable "ecs_cluster_name" {
 variable "image_id" {
   description = "Amazon ECS-Optimized AMI."
   type        = string
+  default     = ""
 }
 
 variable "instance_type" {

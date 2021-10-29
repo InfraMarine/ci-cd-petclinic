@@ -2,7 +2,7 @@ data "aws_partition" "current" {}
 
 # IAM for ecs instance
 resource "aws_iam_role" "ecs" {
-  name = "iam_role_ecs"
+  name = "iam_role_ecs-${substr(var.ecs_cluster_name, 0, 10)}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -22,7 +22,7 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "ecs" {
-  name = "iam_instance_profile_ecs"
+  name = "iam_profile_ecs-${substr(var.ecs_cluster_name, 0, 10)}"
   role = aws_iam_role.ecs.name
 }
 
