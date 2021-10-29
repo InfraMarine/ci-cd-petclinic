@@ -12,6 +12,10 @@ pipeline {
 		string(name: 'ECS_CLUSTER_NAME',
 			defaultValue: 'petclinic-CI-QA-deploy',
 			description: 'ecs cluster name')
+
+		string(name: 'IMAGE_TAG',
+			defaultValue: '15',
+			description: 'ecr image tag')
     }
     stages {
         stage('Dependencies') {
