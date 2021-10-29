@@ -6,12 +6,11 @@
   tasks:
     - set_fact:
         ecr_url: "{{ lookup('env','ECR_URL') }}"
-        build_id: "{{ lookup('env','BUILD_ID') }}"
 
     - name: Create ecs service from ecr image
       include_role:
         name: deploy_service
       vars:
         service_name: "{{ app_name }}-ci-latest"
-        image: "{{ ecr_url }}/{{ app_name }}:{{ build_id }}"
+        image: "{{ ecr_url }}/{{ app_name }}"
         ecs_cluster_name: "{{ lookup('env','ECS_CLUSTER_NAME') }}"
