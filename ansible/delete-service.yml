@@ -1,0 +1,23 @@
+---
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - set_fact:
+        image_tag: "{{ lookup('env','IMAGE_TAG') }}"
+
+    - name: describe services
+      community.aws.ecs_service_info:
+        cluster: "{{ lookup('env','ECS_CLUSTER_NAME') }}"
+      register: output
+
+    - name: print output
+      debug:
+        var: output
+
+    - name: delete service
+      community.aws.ecs_service:
+        name: "{{ app_name }}-qa-{{ image_tag }}"
+        state: absent
+        cluster: "{{ lookup('env','ECS_CLUSTER_NAME') }}"
