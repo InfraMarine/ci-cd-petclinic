@@ -9,6 +9,7 @@
 
     - name: describe services
       community.aws.ecs_service_info:
+        service: "{{ app_name }}-qa-{{ image_tag }}"
         cluster: "{{ lookup('env','ECS_CLUSTER_NAME') }}"
       register: output
 
