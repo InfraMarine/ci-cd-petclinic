@@ -12,7 +12,7 @@ pipeline {
 			description: 'ecs cluster name')
 
 		string(name: 'IMAGE_TAG',
-			defaultValue: '15',
+			defaultValue: '0',
 			description: 'ecr image tag')
     }
     stages {

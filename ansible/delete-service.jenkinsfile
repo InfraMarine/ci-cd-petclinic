@@ -3,16 +3,12 @@ pipeline {
 	parameters {
         string(name: 'AWS_REGION', defaultValue: 'eu-central-1', description: 'aws region for ansible aws modules')
 
-		string(name: 'ECR_URL',
-			defaultValue: '232484871880.dkr.ecr.eu-central-1.amazonaws.com',
-			description: 'ecr url without repo name')
-
 		string(name: 'ECS_CLUSTER_NAME',
 			defaultValue: 'petclinic-CI-QA-deploy',
 			description: 'ecs cluster name')
 
 		string(name: 'IMAGE_TAG',
-			defaultValue: '0',
+			defaultValue: '21',
 			description: 'ecr image tag')
     }
     stages {
@@ -30,7 +26,7 @@ pipeline {
 					secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
 				]]) {
 					ansiblePlaybook(inventory: 'ansible/hosts.ini', forks: 1,
-						playbook: 'ansible/deploy-service-qa.yml'
+						playbook: 'ansible/delete-service.yml'
 					)
 				}
 			}
