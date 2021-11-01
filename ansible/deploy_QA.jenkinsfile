@@ -2,8 +2,6 @@ pipeline {
     agent { label 'master'}
 	parameters {
         string(name: 'AWS_REGION', defaultValue: 'eu-central-1', description: 'aws region for ansible aws modules')
-		
-		string(name: 'VPC_NAME', defaultValue: 'deploy-vpc', description: 'existing vpc tag-name')
 
 		string(name: 'ECR_URL',
 			defaultValue: '232484871880.dkr.ecr.eu-central-1.amazonaws.com',
@@ -32,7 +30,7 @@ pipeline {
 					secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
 				]]) {
 					ansiblePlaybook(inventory: 'ansible/hosts.ini', forks: 1,
-						playbook: 'ansible/deploy-service-ci.yml'
+						playbook: 'ansible/deploy-service-qa.yml'
 					)
 				}
 			}

@@ -58,6 +58,7 @@ resource "aws_iam_role_policy" "jenkins" {
         "ecs:RunTask",
         "ecs:StopTask",
         "ecs:DescribeTasks",
+        "ecr:DescribeImages",
         "ecr:GetAuthorizationToken",
         "ecr:BatchCheckLayerAvailability",
         "ecr:GetDownloadUrlForLayer",
