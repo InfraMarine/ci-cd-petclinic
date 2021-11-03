@@ -1,5 +1,5 @@
 ## CI/CD project for [spring-petclinic web-app](https://github.com/InfraMarine/spring-petclinic.git)
-Using Terraform, Ansible, Jenkins serverless, Docker, AWS cloud provider.
+Using Terraform, Ansible, Jenkins serverless, Docker, AWS cloud provider. 
 
 This project is created for educational pusposes. It exemplifies creating simple CI/CD process for Java (Spring) web app. 
 As such in terms of cloud infrastructure project is built to be as cheap as possible (under AWS Free Tier). [Detailed](./terraform-jenkins-cloud). 
@@ -12,7 +12,7 @@ AWS cloud [deploy](./terraform-deploy-env) and [CI/CD orchestration](./terraform
   - builds JAR file from source
   - from JAR file builds Docker image and tags it with Jenkins build id and git commit hash
   - pushes Docker image to ECR (artifact storage)
-  - triggers CI deploy pipeline, which executes __Ansible CI deploy playbook__
+  - triggers CI deploy pipeline, which executes __Ansible CI deploy playbook__ to deploy latest image to ECS
 - Ansible deploy playbooks create ecs task definition and ecs service given for given image tag, but:
   - __[CI playbook](./ansible/deploy-service-ci.yml)__ updates existing service and task definition both named _petclinic-ci-latest_
   - [QA playbook](./ansible/deploy-service-qa.yml) creates new resources with image tag embedded in their names
