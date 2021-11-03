@@ -23,6 +23,10 @@ This container IP is known only after defined service deployment which can take 
 
 QA and CI deployments are very similar and deployed to same ECS cluster for the sake of simplicity.
 
+Deployed CI task and one QA task:
+
+![tasks](images/tasks.png)
+
 To work with AWS cloud Ansible uses collection [Community.Aws](https://docs.ansible.com/ansible/latest/collections/community/aws/index.html) with [Amazon.Aws](https://docs.ansible.com/ansible/latest/collections/amazon/aws/index.html) also included in requirements but not used (to obtain VPC info) :sweat_smile:
 
 [Dockerfile for app](https://github.com/InfraMarine/spring-petclinic/blob/main/Dockerfile) and [Jenkinsfile for build/push job](https://github.com/InfraMarine/spring-petclinic/blob/main/Jenkinsfile) are located in spring-petclinic app repository, while other Jenkinsfiles and IaC files are located here.
